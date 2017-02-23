@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.net.URL;
 
@@ -41,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         new dropBoxCommunicationTask().execute();
     }
 
@@ -50,13 +52,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(URL... params) {
             String response = "null";
-
             try {
                 response = sentPost();
             } catch (IOException e) {
                 Log.i(DROP_BOX, "Bląd komunikacji dropBox");
             }
-
             return response;
         }
 
@@ -65,7 +65,21 @@ public class MainActivity extends AppCompatActivity {
             super.onPostExecute(s);
             Log.i(DROP_BOX, s);
 
+            try {
+                displayResponse(s);
+            } catch (JSONException e) {
+                Log.i(DROP_BOX, "Problem z zamianą ze stringa na jasona");
+            }
+        }
 
+        private void displayResponse(String s) throws JSONException {
+            JSONObject json = new JSONObject(s);
+            mId.setText(json.getString("account_id"));
+            JSONObject jsonName = new JSONObject(json.getString("name"));
+            mFirstName.setText(jsonName.getString("given_name"));
+            mLastName.setText(jsonName.getString("surname"));
+            mEmail.setText(json.getString("email"));
+            mCountry.setText(json.getString("country"));
         }
 
         private String sentPost() throws IOException {
