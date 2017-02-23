@@ -4,10 +4,13 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.net.URL;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -18,10 +21,26 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String DROP_BOX = "DropBox";
 
+    @BindView(R.id.id)
+    TextView mId;
+
+    @BindView(R.id.first_name)
+    TextView mFirstName;
+
+    @BindView(R.id.last_name)
+    TextView mLastName;
+
+    @BindView(R.id.email)
+    TextView mEmail;
+
+    @BindView(R.id.country)
+    TextView mCountry;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         new dropBoxCommunicationTask().execute();
     }
@@ -45,6 +64,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             Log.i(DROP_BOX, s);
+
+
         }
 
         private String sentPost() throws IOException {
