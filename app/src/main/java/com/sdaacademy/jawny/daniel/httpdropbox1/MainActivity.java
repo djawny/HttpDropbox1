@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
             String json = "null";
 
             RequestBody body = RequestBody.create(jsonMediaType, json);
-
             Request request = new Request.Builder()
                     .addHeader("Authorization", "Bearer 3TS3KjVdr6AAAAAAAAAAEsa1_XIUjU9uGjQFCeEDejQ_wbmISUFSvuC8uW-rL7Mx")
                     .addHeader("Content-Type", "application/json")
